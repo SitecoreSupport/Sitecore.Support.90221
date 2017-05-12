@@ -23,6 +23,7 @@ namespace Sitecore.Support.Tasks
                     {
                         latestVersion.Fields[FieldIDs.Created].SetValue(DateUtil.IsoNowWithTicks, false);
                         latestVersion.Fields[FieldIDs.Updated].SetValue(DateUtil.IsoNowWithTicks, false);
+                        latestVersion.Fields[FieldIDs.CreatedBy].SetValue(Context.User.Name, false);
                     }
                     latestVersion.Editing.EndEdit();
                 }
