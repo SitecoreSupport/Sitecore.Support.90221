@@ -18,14 +18,17 @@ namespace Sitecore.Support.Tasks
                 if (item2.Versions.Count > 0)
                 {
                     Item latestVersion = item2.Versions.GetLatestVersion();
-                    latestVersion.Editing.BeginEdit();
-                    using (new EventDisabler())
+                    if (latestVersion.IsFallback == false)
                     {
-                        latestVersion.Fields[FieldIDs.Created].SetValue(DateUtil.IsoNowWithTicks, false);
-                        latestVersion.Fields[FieldIDs.Updated].SetValue(DateUtil.IsoNowWithTicks, false);
-                        latestVersion.Fields[FieldIDs.CreatedBy].SetValue(Context.User.Name, false);
+                        latestVersion.Editing.BeginEdit();
+                        using (new EventDisabler())
+                        {
+                            latestVersion.Fields[FieldIDs.Created].SetValue(DateUtil.IsoNowWithTicks, false);
+                            latestVersion.Fields[FieldIDs.Updated].SetValue(DateUtil.IsoNowWithTicks, false);
+                            latestVersion.Fields[FieldIDs.CreatedBy].SetValue(Context.User.Name, false);
+                        }
+                        latestVersion.Editing.EndEdit();
                     }
-                    latestVersion.Editing.EndEdit();
                 }
             }
             foreach (Item item4 in item.GetChildren())
